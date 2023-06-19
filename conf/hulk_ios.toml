@@ -1,0 +1,65 @@
+[rpc]
+address = ":0" # 监听地址
+advertise = "172.32.6.73:29039" # 注册地址
+name = "hulk_dev_pusher" # 目标名称
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+reg_interval = 2 # second
+reg_ttl = 3 # second
+tag = "ios" 
+trans_timeout = 10 # second
+
+[ios]
+apns_environment = "dev" # 推送环境设置 dev开发/pro生产
+apns_timeout = 20 # apns 超时，单位s
+detail_count = 1000 # 一次读取表中的数据量
+erupt_count = 1000 # 并发量
+goroutine_count = 10 # 最大携程数量
+page_limit = 1000 # 单次推送数量
+proxy_port = "" # https 代理端口
+
+[redis]
+delay_prefix = "hulk:ztp:delay" 
+dial_timeout = 50 #ms
+hosts = ["host:port"]
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100 
+prefix = "hulk:ztp:man:" 
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+[db]
+log_mode = true
+master_uri = "user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"
+max_idle_conns = 10
+max_open_conns = 100
+slave_uris = ["user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"]
+type = "mysql"
+
+[log]
+level = "debug" # debug,info,error
+max_size_one_file = 2048 # MB
+name = "ios.log" 
+path = "./log/" 
+
+[debug]
+pprof_port = "0" # 0为随机端口
+
+[etcd]
+enable = true 
+end_points = ["http://127.0.0.1:2379"] # etcd地址
+prefix_key = "/hulk/dev/channel/" 
+suffix_key = "/ios" 
+timeout = 3 # second
+
+
+[kafka_producer]
+hosts = ["127.0.0.1:9092"] # kafka 地址
+topic_prefix = "hulk_dev_" # kafka topic 前缀
+version = "2.0.0"
+
+
+[es_index]
+task_index = "hulk_dev_task"
+task_detail_index = "hulk_dev_task_detail"

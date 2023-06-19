@@ -1,0 +1,61 @@
+[rpc]
+address = ":0" # 监听地址
+name = "hulk_dev_pusher" # 目标名称
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+reg_interval = 2 # second
+reg_ttl = 3 # second
+tag = "mi" 
+trans_timeout = 10 # second
+web_host = "47.109.32.243:29031" # 注册地址
+
+[db]
+log_mode = true
+master_uri = "user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"
+max_idle_conns = 10
+max_open_conns = 100
+slave_uris = ["user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"]
+type = "mysql"
+
+[redis]
+delay_prefix = "hulk:ztp:delay" 
+dial_timeout = 50 #ms
+hosts = ["host:port"]
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100 
+prefix = "hulk:ztp:man:" 
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+[log]
+level = "debug" # debug,info,error
+max_size_one_file = 2048 # MB
+name = "xiaomi.log" 
+path = "./log/" 
+
+[debug]
+pprof_port = "0" # 0为随机端口
+
+[etcd]
+enable = true 
+end_points = ["http://127.0.0.1:2379"] # etcd地址
+prefix_key = "/hulk/dev/channel/" 
+suffix_key = "/小米渠道" 
+timeout = 3 # second
+
+[app]
+appPkgName = "cn.xxx"
+appSecret = "xxx"
+pushUrl = "https://api.xmpush.xiaomi.com/v4/message/regid"
+
+
+[kafka_producer]
+hosts = ["127.0.0.1:9092"] # kafka 地址
+topic_prefix = "hulk_dev_" # kafka topic 前缀
+version = "2.0.0"
+
+
+[es_index]
+task_index = "hulk_dev_task"
+task_detail_index = "hulk_dev_task_detail"

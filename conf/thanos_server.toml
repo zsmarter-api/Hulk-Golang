@@ -1,0 +1,34 @@
+[server] # server 服务
+addr = ":33800" # server 服务监听地址和端口
+handshake_timeout = 3 # handshake (t1s3) timeout
+max_connections = 80000 # max connections
+max_size_package = 1024 # KB, max size of one package
+sync_timeout = 4 # second. ack=1 wait resp timeout
+tag = "1" 
+
+[server.rpc]
+address = ":0" # rpc 地址:端口
+name = "thanos_dev_server" # 注册的服务名
+reg_hosts = ["127.0.0.1:2181"] # 注册中心地址
+reg_interval = 2 # second
+reg_ttl = 3 # second
+trans_timeout = 10 # second
+version = "1.0" 
+
+[server.etcd]
+end_points = ["http://127.0.0.1:2379"]
+prefix_key = "/hulk/dev/application/" 
+timeout = 3 # second
+
+[kafka_producer] # 该服务是 kafka 生产者
+hosts = ["127.0.0.1:9092"] # kafka 地址
+topic_prefix = "thanos_dev_" # kafka topic 前缀
+version = "2.0.0" 
+
+[log]
+level = "debug" # debug,info,error
+max_size_one_file = 2048 # MB
+path = "./log/" # 日志存放路径（相对路径基于可执行文件的路径）
+
+[debug]
+pprof_port = "0"

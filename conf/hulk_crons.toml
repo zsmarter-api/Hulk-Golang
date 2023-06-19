@@ -1,0 +1,31 @@
+[log]
+level = "debug"
+max_size_one_file = 2048
+name = "crons.log"
+path = "./log/"
+
+# 数据库
+[db]
+log_mode = true
+master_uri = "user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"
+max_idle_conns = 10
+max_open_conns = 100
+slave_uris = ["user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"]
+type = "mysql"
+
+[redis]
+dial_timeout = 50 #ms
+hosts = ["host:port"]
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100 
+prefix = "hulk:ztp:man:" 
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+[influx]
+bucket = "hulk-dev"
+host = "http://influxdb_host:port"
+org = "zsmarter"
+token = "xxx"

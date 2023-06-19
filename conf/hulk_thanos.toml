@@ -1,0 +1,74 @@
+[debug]
+pprof_port = "0" # 0为随机端口
+
+[rpc]
+address = ":0" # 监听地址
+advertise = "172.32.6.73:29038" # 注册地址
+name = "hulk_dev_pusher" # 目标名称
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+reg_interval = 2 # second
+reg_ttl = 3 # second
+tag = "thanos" 
+trans_timeout = 10 # second
+
+[log]
+level = "debug" # debug,info,error
+max_size_one_file = 2048 # MB
+name = "thanos.log" # 日志文件名
+path = "./log/" # 日志路径
+
+[db]
+log_mode = true
+master_uri = "user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"
+max_idle_conns = 10
+max_open_conns = 100
+slave_uris = ["user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"]
+type = "mysql"
+
+[redis]
+delay_prefix = "hulk:delay" # KEY前缀
+dial_timeout = 50 #ms
+hosts = ["host:port"] # Redis服务地址
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100 
+prefix = "hulk:ztp:man:" # KEY前缀
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+[thanos.client]
+name = "thanos_dev_pusher" # 目标名称
+poolsize = 100 
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+retries = 3 
+transport_timeout = 10 # Transport 超时时间
+
+[thanos]
+callback_interval = 2 # 回调间隔，秒
+context_timeout = 10 # context 超时时间，秒
+db_size = 1 # 单次推送数量
+go_count = 10 # 最大携程数量
+trans_timeout = 10 # trans 超时时间，秒
+
+[thanos.delay]
+group = "pushmsg_dev_c_2" 
+hosts = ["127.0.0.1:9092"] # kafka server
+max_consumer = 10 # kafka 消费者数量
+topic_prefix = "thanos_dev_" 
+topics = ["login", "logout"] 
+version = "2.0.0" 
+wait_try = 100 # 尝试推送前的等待时间，毫秒
+delay_prefix = "hulk:ztp:delay:" # 延迟key前缀
+delay_maxsize = 1000 # 延迟对了最大尺寸
+
+[kafka_producer]
+hosts = ["127.0.0.1:9092"] # kafka 地址
+topic_prefix = "hulk_dev_" # kafka topic 前缀
+version = "2.0.0"
+
+ 
+
+[es_index]
+task_index = "hulk_dev_task"
+task_detail_index = "hulk_dev_task_detail"

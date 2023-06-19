@@ -1,0 +1,108 @@
+addr = ":32800" # 服务地址与端口号
+http_mode = "debug" # debug/release/test
+web_host = "http://127.0.0.1:32800/mb_api/pushmsg/hulk" # web host, callback used, may be nginx addr:port
+
+[rpcs]
+[rpcs.user] # 用来获取用户信息的微服务配置
+name = "thanos_dev_register" # 用户信息微服务名
+poolsize = 0 
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+retries = 3 
+[rpcs.user.hystrix]
+error_percent_threshold = 50 # 熔断出错率
+max_concurrent_requests = 1000 # 最大并发量
+request_volume_threshold = 500 # 超出这个量才会考虑是否熔断
+sleep_window = 200 # ms, 熔断维持时间
+timeout = 50 # second 请求超时
+
+[rpcs.push] # 用来自建通道推送的微服务配置
+name = "hulk_dev_pusher" # 自建通道微服务名
+poolsize = 100 
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+retries = 3 
+[rpcs.push.hystrix]
+error_percent_threshold = 50 # 熔断出错率
+max_concurrent_requests = 1000 # 最大并发量
+request_volume_threshold = 500 # 超出这个量才会考虑是否熔断
+sleep_window = 200 # ms, 熔断维持时间
+timeout = 500 # second 请求超时
+
+[rpcs.group] # 用来自建通道推送的微服务配置
+name = "hulk-dev-group" # 自建通道微服务名
+poolsize = 100
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+retries = 3
+[rpcs.group.hystrix]
+error_percent_threshold = 50 # 熔断出错率
+max_concurrent_requests = 1000 # 最大并发量
+request_volume_threshold = 500 # 超出这个量才会考虑是否熔断
+sleep_window = 2000 # ms, 熔断维持时间
+timeout = 50 # second 请求超时
+
+
+[analysis]
+start_time = "11:13"
+[analysis.kafka] # login 需要消费 kafka 消息来统计
+group = "hulk_dev_analysis_1"
+hosts = ["127.0.0.1:9092"]
+topic_prefix = "thanos_dev_"
+topics = ["1"]
+version = "2.3.1"
+
+[kafka]
+[kafka.producer]
+hosts = ["127.0.0.1:9092"] # kafka 地址
+topic_prefix = "hulk_dev_" # kafka topic 前缀
+version = "2.3.1" 
+
+[db] # 数据库配置
+log_mode = true
+master_uri = "user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"
+max_idle_conns = 10
+max_open_conns = 100
+slave_uris = ["user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"]
+type = "mysql"
+
+[redis]
+delay_prefix = "hulk:ztp:man:delay" # KEY前缀
+dial_timeout = 50 #ms
+hosts = ["host:port"] # Redis服务地址
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100 
+prefix = "hulk:ztp:man:" # KEY前缀
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+
+[es]
+[es.task_detail]
+host = "http://127.0.0.1:9200"
+index = "hulk_dev_task_detail"
+
+
+[es_index]
+task_index = "hulk_dev_task"
+task_detail_index = "hulk_dev_task_detail"
+
+
+[log]
+level = "debug" # debug,info,error 
+max_size_one_file = 2048 # MB
+path = "./log/" # 日志路径
+name = "manager.log"
+
+[debug]
+pprof_port = "0" # 0为随机端口
+
+[etcd]
+end_points = ["http://127.0.0.1:2379"] # etcd地址
+prefix_key = "/hulk/dev/application/" # 应用前缀
+timeout = 3 # second
+
+[influx]
+bucket = "hulk-dev"
+host = "http://influxdb_host:port"
+org = "zsmarter"
+token = "xxx"

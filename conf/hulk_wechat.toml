@@ -1,0 +1,75 @@
+[rpc]
+address = ":0" # 监听地址
+name = "hulk_dev_pusher" # 目标名称
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+reg_interval = 2 # second
+reg_ttl = 3 # second
+tag = "wechat"
+trans_timeout = 10 # second
+web_host = "47.109.32.243:29033" # 注册地址
+
+[db]
+log_mode = true
+master_uri = "user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"
+max_idle_conns = 10
+max_open_conns = 100
+slave_uris = ["user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"]
+type = "mysql"
+
+[redis]
+delay_prefix = "hulk:ztp:delay" 
+dial_timeout = 50 #ms
+hosts = ["host:port"]
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100 
+prefix = "hulk:ztp:man:" 
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+[log]
+level = "debug" # debug,info,error
+max_size_one_file = 2048 # MB
+name = "wechat.log"
+path = "./log/" 
+
+[debug]
+pprof_port = "0" # 0为随机端口
+
+
+[app]
+pushUrl = "https://api.weixin.qq.com"
+authUrl = "https://api.weixin.qq.com"
+
+
+[etcd]
+end_points = ["http://127.0.0.1:2379"]
+prefix_key = "/hulk/dev/channel/" 
+suffix_key = "/wechat" 
+timeout = 3 # second
+
+[kafka_producer]
+hosts = ["127.0.0.1:9092"] # kafka 地址
+topic_prefix = "hulk_dev_" # kafka topic 前缀
+version = "2.0.0"
+
+[es_index]
+task_index = "hulk_dev_task"
+task_detail_index = "hulk_dev_task_detail"
+
+
+[rpcs]
+[rpcs.user] # 用来获取用户信息的微服务配置
+name = "thanos_dev_register" # 用户信息微服务名
+poolsize = 0 
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+retries = 3 
+[rpcs.user.hystrix]
+error_percent_threshold = 50 # 熔断出错率
+max_concurrent_requests = 1 # 最大并发量
+request_volume_threshold = 1 # 超出这个量才会考虑是否熔断
+sleep_window = 500 # ms, 熔断维持时间
+timeout = 50 # second 请求超时
+
+

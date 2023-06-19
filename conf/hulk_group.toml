@@ -1,0 +1,71 @@
+[rpc]
+address = ":0" # 监听地址
+name = "hulk-dev-group" # 目标名称
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+reg_interval = 2 # second
+reg_ttl = 3 # second
+trans_timeout = 10 # second
+
+
+[rpcs]
+[rpcs.user] # 用来获取用户信息的微服务配置
+name = "thanos_dev_register" # 用户信息微服务名
+poolsize = 0
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+retries = 3
+[rpcs.user.hystrix]
+error_percent_threshold = 50 # 熔断出错率
+max_concurrent_requests = 1000 # 最大并发量
+request_volume_threshold = 500 # 超出这个量才会考虑是否熔断
+sleep_window = 500 # ms, 熔断维持时间
+timeout = 50 # second 请求超时
+
+[rpcs.push] # 用来自建通道推送的微服务配置
+name = "hulk_dev_pusher" # 自建通道微服务名
+poolsize = 100
+reg_hosts = ["127.0.0.1:2181"] # 目标注册地址
+retries = 3
+[rpcs.push.hystrix]
+error_percent_threshold = 50 # 熔断出错率
+max_concurrent_requests = 1000 # 最大并发量
+request_volume_threshold = 500 # 超出这个量才会考虑是否熔断
+sleep_window = 2000 # ms, 熔断维持时间
+timeout = 50 # second 请求超时
+
+
+[db]
+log_mode = true
+master_uri = "user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"
+max_idle_conns = 10
+max_open_conns = 100
+slave_uris = ["user:psss@tcp(host:port)/db_name?charset=utf8mb4&parseTime=True&loc=Local"]
+type = "mysql"
+
+
+[redis]
+hosts = ["host:port"]
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100
+prefix = "hulk:ztp:man:"
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+[kafka_producer]
+hosts = ["127.0.0.1:9092"] # kafka 地址
+topic_prefix = "hulk_dev_" # kafka topic 前缀
+version = "2.0.0"
+
+
+[es_index]
+task_index = "hulk_dev_task"
+task_detail_index = "hulk_dev_task_detail"
+
+
+[log]
+level = "debug" # debug,info,error
+max_size_one_file = 2048 # MB
+path = "./log/"
+name = "group.log"
+

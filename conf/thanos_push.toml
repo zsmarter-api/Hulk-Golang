@@ -1,0 +1,38 @@
+[server]
+http_host = ":0"
+
+[server.thanos_server]
+name = "thanos_dev_server" 
+poolsize = 100 
+reg_hosts = ["127.0.0.1:2181"] # 注册中心地址
+retries = 3 
+trans_timeout = 5 # second
+version = "1.0" 
+
+[server.rpc_server]
+address = ":0" # rpc 地址:端口
+name = "thanos_dev_pusher" 
+reg_hosts = ["127.0.0.1:2181"] # 注册中心地址
+reg_interval = 2 # second
+reg_ttl = 3 # second
+trans_timeout = 5 # second
+version = "1.0" 
+
+[redis]
+dial_timeout = 50 #ms
+hosts = ["host:port"] # redis 地址
+password = "pass"
+pool_timeout = 60 #second
+poolsize = 100 
+prefix = "hulk:ztp:thanos:" # 服务所有 redis 数据前缀
+read_timeout = 5000 #ms
+write_timeout = 50 #ms
+db = 1
+
+[log]
+level = "debug" # debug,info,error
+max_size_one_file = 2048 # MB
+path = "./log/" 
+
+[debug]
+pprof_port = "0"
